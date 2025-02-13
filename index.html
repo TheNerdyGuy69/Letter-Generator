@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter Generator 💌</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Pacifico&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            text-align: center;
+            background: linear-gradient(180deg, #ffcccc 0%, #ffe6e6 100%);
+            color: #d63384;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3vw;
+            margin-bottom: 10px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 5px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Pacifico', cursive;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0px 4px 10px rgba(255, 77, 109, 0.4);
+            width: 90%;
+            max-width: 250px;
+            align-self: center;
+        }
+
+        button:hover {
+            background-color: #d63384;
+            transform: scale(1.05);
+        }
+
+        /* Ensuring text visibility */
+        #letter {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            line-height: 1.8;
+            font-family: 'Pacifico', cursive;
+            min-height: 100px;
+            white-space: pre-line;
+            opacity: 0;
+        }
+
+        /* Slideshow Images */
+        .slideshow {
+            margin: 20px auto;
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slideshow img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            border-radius: 10px;
+        }
+
+        .slideshow img:first-child {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Falling Hearts */
+        .falling-heart {
+            position: fixed;
+            top: -10px;
+            color: #ff4d6d;
+            font-size: 30px;
+            /* Increased size */
+            animation: fall 6s linear infinite;
+            z-index: 9999;
+            /* Ensure hearts appear above everything */
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-10vh);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        /* Animation Effects */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 5vw;
+            }
+
+            .container {
+                max-width: 90%;
+                padding: 15px;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 10px 16px;
+                max-width: 200px;
+            }
+
+            #letter {
+                font-size: 1.2rem;
+            }
+
+            .slideshow img {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>For You Mauuuuuuuu 💖</h1>
+
+    <div class="container">
+        <p>Click the button to view yours Sauuuuu's Thoughts</p>
+        <button onclick="generateLetter()">View My Heart 💌</button>
+
+        <!-- Slideshow Images -->
+        <div class="slideshow" id="slideshow">
+            <img src="https://t4.ftcdn.net/jpg/10/44/79/69/240_F_1044796902_PhhP1lKmmBUk5G3T6uk4ECi29xvYIq9x.jpg"
+                alt="Teddy Bear" class="active">
+            <img src="https://as1.ftcdn.net/v2/jpg/12/10/14/06/1000_F_1210140693_MoSgXL8snGmkuxcl0Jj5Un0T1PLBEQiy.jpg"
+                alt="Love Heart">
+            <img src="https://t4.ftcdn.net/jpg/12/35/37/85/240_F_1235378568_FYKcveswCQc6XpU4tB9Z32CyGTB6SSRW.jpg"
+                alt="Rose">
+            <img src="https://t3.ftcdn.net/jpg/11/28/42/28/240_F_1128422864_VDQP66IOYlpmzjQI4gBqcIqasOKHC6FE.jpg"
+                alt="Love Letter">
+        </div>
+
+        <p id="letter"></p>
+        <button onclick="copyLetter()">Copy to your heart 💖</button>
+    </div>
+
+    <script>
+        // Falling Hearts Effect
+        function createFallingHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("falling-heart");
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 5 + 3 + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        setInterval(createFallingHeart, 500);
+
+        // Slideshow Effect
+        document.addEventListener("DOMContentLoaded", () => {
+            let slideIndex = 0;
+            const slides = document.querySelectorAll(".slideshow img");
+
+            function changeSlide() {
+                slides.forEach((slide, index) => {
+                    slide.style.opacity = "0";
+                    slide.style.transform = "scale(0.8)";
+                });
+
+                slides[slideIndex].style.opacity = "1";
+                slides[slideIndex].style.transform = "scale(1)";
+
+                slideIndex = (slideIndex + 1) % slides.length;
+            }
+
+            setInterval(changeSlide, 3000);
+        });
+
+        // Typewriter Effect for Letter
+        function typeWriterEffect(text, element) {
+            let index = 0;
+            element.innerHTML = "";
+            element.style.opacity = 1;
+            function type() {
+                if (index < text.length) {
+                    element.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+
+        // Love Letter Generator
+        const opening = ["To my aatishay premal Mauuu,", "To the most important person in my life,", "Bayko,", "My life Mauuu,"];
+        const middle = ["I want to cherish every moment we spend with each other", "Your existence is enough to make my day better.", "I cherish every smile, every laugh, every hug we share.", "You are the light of my life and the reason I smile every day."];
+        const closing = ["Forever yours,", "With all my love,", "Always and forever,", "Yours truly,"];
+        const signature = ["Your love Sauuuuu ❤️", "Your soulmate Sauuuuu 💖", "Your forever Sauuuu ❤️", "Your one and only Sauuuu 💕"];
+
+        function generateLetter() {
+            let letterText = `❤️\n${randomText(opening)}\n\n${randomText(middle)}\n\n${randomText(closing)}\n${randomText(signature)}`;
+            document.getElementById("slideshow").style.display = "none";
+            typeWriterEffect(letterText, document.getElementById("letter"));
+        }
+
+        function randomText(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+    </script>
+
+</body>
+
+</html>
