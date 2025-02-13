@@ -268,6 +268,31 @@
         function randomText(array) {
             return array[Math.floor(Math.random() * array.length)];
         }
+
+        // Function to copy letter text to clipboard
+        function copyLetter() {
+            const letterText = document.getElementById("letter").innerText;
+
+            if (!letterText) {
+                alert("Generate the letter first! 💌");
+                return;
+            }
+
+            navigator.clipboard.writeText(letterText)
+                .then(() => {
+                    alert("Letter copied to your heart 💖");
+                    redirectToWebsite(); // Call function to redirect after copying
+                })
+                .catch(err => {
+                    console.error("Failed to copy: ", err);
+                });
+        }
+
+        // Function to redirect to a preferred website after copying
+        function redirectToWebsite() {
+            window.location.href = "https://open.spotify.com/playlist/4GUk4wMP3kT5I3hmeWUaGN?si=I4g8HOQhQmWFV0kaio3GqA&pi=K6aZgIQTQCOzw"; // Change this URL
+        }
+
     </script>
 
 </body>
